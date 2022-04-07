@@ -264,7 +264,7 @@ class BomScan:
 				self.BOMlist['Podiatry Dressing Set Vascular'] += countPVS
 			if countPDS > 0:
 				tempDict['Podiatry Dressing Set Clinic 1'] = countPDS
-				self.BOMlist['Podiatry Dressing Set Vascular'] += countPDS
+				self.BOMlist['Podiatry Dressing Set Clinic 1'] += countPDS
 			#print(time.time()-start_time, "seconds") #print time taken
 			return tempDict
 

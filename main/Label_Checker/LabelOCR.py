@@ -137,7 +137,7 @@ class LabelOCR:
     6. and ProdID 
     """
     
-    def start(self, weight):
+    def scan(self, weight):
         #https://pyimagesearch.com/2021/12/01/ocr-passports-with-opencv-and-tesseract/
         # construct the argument parser and parse the arguments
         '''

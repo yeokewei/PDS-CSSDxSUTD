@@ -18,11 +18,11 @@ Total scan count stored within .BOMlist (can be called)
 Cmd line
 Windows
 python main.py --image images\2kPaper2.png
-
 python main.py --image BOM_Scanner\images\2kPaper2.png
 
 Rpi
 python main.py --image images/2kPaper2.jpg
+python main.py --image BOM_Scanner/images/2kPaper2.png
 '''
 start_time = time.time()
 
@@ -39,7 +39,6 @@ output = BOM.scan()
 print(output) #return dictionary with quantity
 
 print(time.time()-start_time, "seconds") #print time taken
-
 
 start_time = time.time()
 

@@ -1,6 +1,6 @@
 #Libraries for HX711 load cell:
 import RPi.GPIO as GPIO  # import GPIO
-from hx711 import HX711  # import the class HX711
+from .hx711 import HX711  # import the class HX711
 
 #Load cell setup start
 class hx711_custom:

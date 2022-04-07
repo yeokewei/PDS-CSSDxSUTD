@@ -26,11 +26,11 @@ args = vars(ap.parse_args())
 
 locr = LabelOCR(path = args["image"], windows = True, dispToggle=1)
 
-output = locr.start(100)
+output = locr.scan(100)
 
 locr.path = r'images\2kPDSF2.jpg' #incase you need to change path on the fly
 
-output = locr.start(200)
+output = locr.scan(200)
 
 print(output)
 print(locr.df) #if you want to access df
