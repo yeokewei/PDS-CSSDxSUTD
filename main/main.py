@@ -1,5 +1,6 @@
 #https://docs.python.org/3/reference/import.html#package-relative-imports
 #Importing BOM_Scanner, Label_Checker and HX711
+
 from BOM_Scanner.BomScan import BomScan
 from Label_Checker.LabelOCR import LabelOCR
 
