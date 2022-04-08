@@ -1,7 +1,3 @@
-scale_input = 48739
-weight = 100
-ratio = float(weight/scale_input)
-
 #Libraries for HX711 load cell:
 import RPi.GPIO as GPIO  # import GPIO
 from hx711 import HX711  # import the class HX711
@@ -24,7 +20,7 @@ if err:
     raise ValueError('Tare is unsuccessful.')
     #checks for error in initialising HX711
 
-hx.set_scale_ratio(ratio)
+hx.set_scale_ratio(487.39)
 #set ratio used to convert load cell readings into grams
 
 # print(hx.get_weight_mean(20), 'g') #prints the weight in grams. Loop this 
