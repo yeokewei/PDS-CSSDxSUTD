@@ -216,9 +216,11 @@ class BomScan:
 			self.boundingBox(df=parsedBOMText,cvImg=rotated, pause= self.dispConArr["bounded"][0], db= self.dispConArr["bounded"][1])
 
 			podiatryRows = parsedBOMText.query('text == "Podiatry"').index
-			#print(podiatryRows)
+			
+			print(podiatryRows)
 			#Loops through rows that starts with Podiatry and parse through to make full name
 			for row in podiatryRows:
+                
 				print('current row: %s'%(row))
 				currentLine = parsedBOMText._get_value(row,'line_num')
 				currentPar= parsedBOMText._get_value(row,'par_num')
@@ -229,7 +231,8 @@ class BomScan:
 				stringArr.append(parsedBOMText._get_value(row,'text'))
 				print(stringArr)
 				tempRow = row+1
-				quantity = parsedBOMText._get_value(row-2,'text')
+			
+				print(currentLine, currentPar)
 				
 				while currentLine == tempLine and currentPar == tempPar:
 					stringArr.append(parsedBOMText._get_value(tempRow,'text').replace(" ", ""))

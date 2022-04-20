@@ -6,6 +6,7 @@ import pytesseract
 import imutils
 import cv2
 import time
+import os
 
 #import sys
 #import argparse
@@ -280,14 +281,22 @@ class LabelOCR:
         print(time.time()-start_time, "seconds") #print time taken
         #print(infoText)
         infoText['text'] = infoText['text'].astype('str') #change 'text' column to string type for better manipulation
-
-        #infoText.to_csv(r'C:\Users\User\OneDrive - Singapore University of Technology and Design\MODS\T4\60.003 Product Design Studio\Projs\RPI\3OCR\Label Checker\out.csv', encoding='utf-8', index=False)
+        
 
         #show bounding boxes on final image (to check how image is OCRed)
         self.boundingBox(df=infoText,cvImg=croppedBottom, pause= self.dispConArr["Final Image"][0], db= self.dispConArr["Final Image"][1])
 
         #Filter and accept those above confidence value
         parsedinfoText = infoText.query('conf > 70.0')
+        
+        cwd = os.getcwd() #get current working dir
+        outputCSV = cwd+"\labelout.csv"
+        infoText.to_csv(outputCSV, encoding='utf-8', index=False)
+        
+        outputCSV2 = cwd+"\labelout2.csv"
+        parsedinfoText.to_csv(outputCSV2, encoding='utf-8', index=False)
+               
+        
         #print(parsedinfoText)
         ProdID = None
         ProdName = None

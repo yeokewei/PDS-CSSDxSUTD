@@ -214,7 +214,7 @@ def initclass():
 def takePhoto(output = 0, width = 2560 ,height= 1920, af = 0, delayms = 1500, nopreview = 1):
     #output: 0 bom, 1 labelhigh, 2 labellow
     #focus: 0 not in use 1200 for bom, 1550 labelhigh 1300 labellow
-    focusval = [1200,1550,1300]
+    focusval = [1200,1550,1370]
     path = ["assets/bom.png","assets/label.png","assets/label2.png"]
     if af:
         focusstring = ""
@@ -463,9 +463,9 @@ if st.session_state['page']=='ind_scan':
         
         c1,c2 = st.columns(2)
         if flag == "None":
-            c1.button('Retry Scan', on_click=ind_scan)
+            c1.button('Retry Scan', on_click=ind_scanf)
         else:
-            c1.button('Next Scan', on_click=ind_scan)
+            c1.button('Next Scan', on_click=ind_scanf)
         c2.button('Finish Scan', on_click=secconfirm_finishpage)
         col_1,col_2,col_3 =st.columns([2,1,1])
         
@@ -508,7 +508,6 @@ if st.session_state['page']=='ind_scan':
                 else:
                     printdf = LABELDf.df.query('ProdName == "Podiatry Dressing Set Vascular"')
                     st.table(printdf)  
-        
         
     else:
         
