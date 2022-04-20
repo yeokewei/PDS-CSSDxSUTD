@@ -13,7 +13,7 @@ Windows
 python runcode.py --image images\abc4.jpg
 
 Rpi
-python runcode.py --image images/1920PNSF3.jpg
+python runcode.py --image images/2k10_2.jpg
 '''
 
 
@@ -24,13 +24,13 @@ args = vars(ap.parse_args())
 #print(args["image"])
 #print(type(args["image"]))
 
-locr = LabelOCR(path = args["image"], windows = True, dispToggle=1)
+locr = LabelOCR(path = args["image"], windows = False, dispToggle=0)
 
 output = locr.scan(100)
 
-locr.path = r'images\2kPDSF2.jpg' #incase you need to change path on the fly
+#locr.path = r'images/2kPNSF3.jpg' #incase you need to change path on the fly
 
-output = locr.scan(200)
+#output = locr.scan(200)
 
 print(output)
 print(locr.df) #if you want to access df

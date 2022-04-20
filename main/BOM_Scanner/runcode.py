@@ -15,7 +15,7 @@ Windows
 python runcode.py --image images\2kPaper2.png
 
 Rpi
-python runcode.py --image images/2kPaper2.jpg
+python runcode.py --image images/2kPaper2.png
 '''
 start_time = time.time()
 
@@ -28,7 +28,7 @@ args = vars(ap.parse_args())
 #print(args["image"])
 #print(type(args["image"]))
 
-BOM = BomScan(path = args["image"], windows = True, dispToggle=0)
+BOM = BomScan(path = args["image"], windows = False, dispToggle=1)
 
 output = BOM.scan()
 
@@ -36,5 +36,13 @@ output = BOM.scan()
 #output = BOM.scan()
 
 print(output) #return dictionary with quantity
+
+#BOM.path = r"images/2kPaper.png"
+
+#output = BOM.scan()
+
+#print(output)
+
+print(BOM.BOMDict)
 
 print(time.time()-start_time, "seconds") #print time taken

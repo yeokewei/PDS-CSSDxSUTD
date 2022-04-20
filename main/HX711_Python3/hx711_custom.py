@@ -2,15 +2,17 @@
 import RPi.GPIO as GPIO  # import GPIO
 from .hx711 import HX711  # import the class HX711
 
+#487.39 Cell A
+#455.29 Cell B
+
 #Load cell setup start
 class hx711_custom:
-    def __init__(self, dpin = 21, sckpin = 20, calWeight = 100, calscale_input = 48739):
+    def __init__(self, dpin = 26, sckpin = 19, ratio = 466.61):
         GPIO.setmode(GPIO.BCM)  # set GPIO pin mode to BCM numbering
             # Create an object hx which represents your real hx711 chip
             # Required input parameters are only 'dout_pin' and 'pd_sck_pin'\
         self._weight = 0
-        ratio = float(calWeight/calscale_input)
-
+        self.ratio = ratio
         self.hx = HX711(dout_pin=dpin, pd_sck_pin=sckpin)
             # measure tare and save the value as offset for current channel
             # and gain selected. That means channel A and gain 128
@@ -31,13 +33,16 @@ class hx711_custom:
     @weight.setter
     def weight(self,x):
         self._weight = x
-
+        
+    def zero(self):
+        self.hx.zero()
+        self.hx.set_scale_ratio(self.ratio)
 
     def takeweight(self):
         self.weight = self.hx.get_weight_mean(20)
         return self.weight
 
-    def cleanup():
+    def cleanup(self):
         #end of code
         # Cleaning up the ports that we have used in this code. It is important to do so,
         # otherwise you might have problems when you want to use the same ports for another

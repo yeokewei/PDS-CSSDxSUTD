@@ -1,12 +1,12 @@
 # import the necessary packages
-#
+
 #from matplotlib.pyplot import gray
 import pytesseract
 #import argparse
 import imutils
 import cv2
 #import time
-#import os
+import os
 import numpy as np
 #import re
 #import pandas
@@ -36,7 +36,7 @@ class BomScan:
 		self.setNames = {1:{'Podiatry', 'Dressing', 'Set', 'Vascular'}, 2:{'Podiatry', 'Dressing', 'Set', 'Clinic', '1'}}
 		self._path = path
 		self.pagewords = []
-		self.BOMlist = {'Podiatry Dressing Set Vascular': 0, 'Podiatry Dressing Set Clinic 1': 0}
+		self.BOMDict = {'Podiatry Dressing Set Vascular': 0, 'Podiatry Dressing Set Clinic 1': 0}
 		self.debug = dispToggle
 
 		if windows:
@@ -63,7 +63,7 @@ class BomScan:
 					"rect close":[0,1],
 					"square close":[0,1],
 					"dilate":[0,1],
-					"rotated":[1,1],
+					"rotated":[0,1],
 					"Biggest Bound":[0,1],
 					"cropped":[0,1],
 					"rectbounds":[0,1],
@@ -112,9 +112,8 @@ class BomScan:
 	def scan(self):
 
 		try:
-
+            
 			tempDict = {'Podiatry Dressing Set Vascular': 0, 'Podiatry Dressing Set Clinic 1': 0}
-
 			#start_time = time.time()
 			# load the input image from disk, resize it, and compute the ratio
 			# of the *new* width to the *old* width
@@ -203,12 +202,14 @@ class BomScan:
 			parsedBOMText.reset_index(drop=True, inplace=True)
 			#print(parsedBOMText)
 
-			'''
+			
 			#For exporting to csv in windows (debugging purposes)
 			#export df to csv
+			'''
 			cwd = os.getcwd() #get current working dir
 			outputCSV = cwd+"\out.csv"
 			BOMText.to_csv(outputCSV, encoding='utf-8', index=True)
+			
 			outputCSV2 = cwd+"\out2.csv"
 			parsedBOMText.to_csv(outputCSV2, encoding='utf-8', index=True)
 			'''
@@ -216,20 +217,19 @@ class BomScan:
 
 			podiatryRows = parsedBOMText.query('text == "Podiatry"').index
 			#print(podiatryRows)
-
 			#Loops through rows that starts with Podiatry and parse through to make full name
 			for row in podiatryRows:
-				#print('current row: %s'%(row))
+				print('current row: %s'%(row))
 				currentLine = parsedBOMText._get_value(row,'line_num')
 				currentPar= parsedBOMText._get_value(row,'par_num')
-				#print('current line: %s'%(currentLine))
+				print('current line: %s'%(currentLine))
 				tempLine = currentLine
 				tempPar = currentPar
 				stringArr = []
 				stringArr.append(parsedBOMText._get_value(row,'text'))
-				#print(stringArr)
+				print(stringArr)
 				tempRow = row+1
-				#quantity = parsedBOMText._get_value(row-2,'text')
+				quantity = parsedBOMText._get_value(row-2,'text')
 				
 				while currentLine == tempLine and currentPar == tempPar:
 					stringArr.append(parsedBOMText._get_value(tempRow,'text').replace(" ", ""))
@@ -237,6 +237,7 @@ class BomScan:
 					tempLine = parsedBOMText._get_value(tempRow,'line_num')
 					tempPar = parsedBOMText._get_value(tempRow,'par_num')
 				#self.pagewords.append({'quantity':quantity,'string': stringArr,'row':row})
+				print(stringArr)
 				self.pagewords.append({'string': stringArr,'row':row})
 			#print(self.pagewords)
 
@@ -249,8 +250,8 @@ class BomScan:
 					except:
 						print('Possible Data scan error: ',item['string'], 'row: ', item['row'])
 						
-				elif set(item['string']) & set(['Podiatry', 'Dressing', 'Set', 'Clinic', '1']) == {'Podiatry', 'Dressing', 'Set', 'Clinic', '1'}:
-					try:
+				elif set(item['string']) & set(['Podiatry', 'Dressing', 'Set', 'Clinic']) == {'Podiatry', 'Dressing', 'Set', 'Clinic'}:
+					try:#Podiatry Nail Surgery Set Clinic 1 ?
 						countPDS+= 1
 					except:
 						print('Possible Data scan error: ',item['string'], 'row: ', item['row'])
@@ -259,15 +260,18 @@ class BomScan:
 						print(item['string'])
 					else:	
 						pass
+			if (countPVS == 0 and countPDS == 0):
+				return None #able to scan but no PVS or PDS
 			if countPVS > 0:
 				tempDict['Podiatry Dressing Set Vascular'] = countPVS
-				self.BOMlist['Podiatry Dressing Set Vascular'] += countPVS
+				self.BOMDict['Podiatry Dressing Set Vascular'] += countPVS
 			if countPDS > 0:
 				tempDict['Podiatry Dressing Set Clinic 1'] = countPDS
-				self.BOMlist['Podiatry Dressing Set Clinic 1'] += countPDS
-			#print(time.time()-start_time, "seconds") #print time taken
+				self.BOMDict['Podiatry Dressing Set Clinic 1'] += countPDS
 			return tempDict
 
 		except:
 			print(f"Error {image}, please rescan")
 			return None
+		finally:
+			self.pagewords.clear()

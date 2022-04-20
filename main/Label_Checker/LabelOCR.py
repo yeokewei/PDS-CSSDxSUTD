@@ -24,10 +24,10 @@ Scans and rips out Label Name (ProdName) and Unique Serial number (ProdID)
 
 
 #Windows
-python OCR3.py --image images\abc4.jpg
+python LabelOCR.py --image images\abc4.jpg
 
 #RPI
-python OCR3.py --image model_pics/abc2.jpg
+python LabelOCR.py --image model_pics/2k10_1.jpg
 '''
 class LabelOCR:
     def __init__(self, path = '', windows = False, dispToggle = 0): #initilise 
@@ -231,17 +231,21 @@ class LabelOCR:
                 #angle = (90 - angle)
 
         # rotate the image to deskew it
-        if landscape:
-            (h_s, w_s) = croppedimg.shape[:2]
-            center = (w_s // 2, h_s // 2)
-            M = cv2.getRotationMatrix2D(center, angle, 1.0)
-            rotated = cv2.warpAffine(croppedimg, M, (w_s, h_s),
-                flags=cv2.INTER_CUBIC, borderMode=cv2.BORDER_REPLICATE)
-        else:
-            rotated = imutils.rotate_bound(croppedimg, angle)
+        if angle >= 0.05 or angle<=-0.05:
+            if landscape:
+                (h_s, w_s) = croppedimg.shape[:2]
+                center = (w_s // 2, h_s // 2)
+                M = cv2.getRotationMatrix2D(center, angle, 1.0)
+                rotated = cv2.warpAffine(croppedimg, M, (w_s, h_s),
+                    flags=cv2.INTER_CUBIC, borderMode=cv2.BORDER_REPLICATE)
+            else:
+                rotated = imutils.rotate_bound(croppedimg, angle)
         
-        self.displayCVimg(rotated, name = "rotated", wait= self.dispConArr["rotated"][0], debugging= self.dispConArr["rotated"][1], height=360)
-
+            self.displayCVimg(rotated, name = "rotated", wait= self.dispConArr["rotated"][0], debugging= self.dispConArr["rotated"][1], height=360)
+        
+        else:
+            rotated = croppedimg
+            
         print("[INFO] angle: {:.3f}".format(angle))
 
         '''
@@ -310,7 +314,7 @@ class LabelOCR:
                 #print(len(ProdID))
             except:
                 print('ProdID not found')
-
+                ProdID = None
         '''
         ProdNameLine = parsedinfoText.query('text == @setNames[1][0]').index.item()
         print(packedRow , ProdNameLine)
@@ -326,7 +330,7 @@ class LabelOCR:
             while  True:
                 #tempName = infoText[(infoText['line_num'] == ProdNameLine) & (infoText['word_num'] == ProdWordLine) & (infoText.index>packedRow+10)]['text'].values[0]
                 tempName = infoText.iloc[ProdNameRow, infoText.columns.get_loc('text')]
-                #print(tempName)
+                print(tempName)
                 if tempName == '/':
                     break
                 else:
@@ -337,7 +341,7 @@ class LabelOCR:
             #print(dfName)
         except:
             errorName = True
-            print("Product Id can't be found")
+            print("Product Name can't be found")
         finally:
             if not(errorName):
                 ProdName = dfName
@@ -347,7 +351,8 @@ class LabelOCR:
         dataDict = {'Weight': weight, 'ProdName': ProdName, 'ProdID': ProdID}
         dataDf = DataFrame.from_records(dataDict, index=[0])
         self.df = concat([self.df,dataDf] , ignore_index=True)
-        #print(self.df)
+        print(self.df)
+        print(dataDict)
         return dataDict
 
 
