@@ -282,7 +282,7 @@ class LabelOCR:
         #print(infoText)
         infoText['text'] = infoText['text'].astype('str') #change 'text' column to string type for better manipulation
 
-        infoText.to_csv(r'C:\Users\User\OneDrive - Singapore University of Technology and Design\MODS\T4\60.003 Product Design Studio\Projs\RPI\3OCR\Code\Label_Checker\out.csv', encoding='utf-8', index=False)
+        #infoText.to_csv(r'C:\Users\User\OneDrive - Singapore University of Technology and Design\MODS\T4\60.003 Product Design Studio\Projs\RPI\3OCR\Code\Label_Checker\out.csv', encoding='utf-8', index=False)
 
         #show bounding boxes on final image (to check how image is OCRed)
         self.boundingBox(df=infoText,cvImg=croppedBottom, pause= self.dispConArr["Final Image"][0], db= self.dispConArr["Final Image"][1])
