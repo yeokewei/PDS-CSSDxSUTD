@@ -6,7 +6,7 @@ import pytesseract
 import imutils
 import cv2
 import time
-import os
+import re
 
 #import sys
 #import argparse
@@ -281,22 +281,14 @@ class LabelOCR:
         print(time.time()-start_time, "seconds") #print time taken
         #print(infoText)
         infoText['text'] = infoText['text'].astype('str') #change 'text' column to string type for better manipulation
-        
+
+        infoText.to_csv(r'C:\Users\User\OneDrive - Singapore University of Technology and Design\MODS\T4\60.003 Product Design Studio\Projs\RPI\3OCR\Code\Label_Checker\out.csv', encoding='utf-8', index=False)
 
         #show bounding boxes on final image (to check how image is OCRed)
         self.boundingBox(df=infoText,cvImg=croppedBottom, pause= self.dispConArr["Final Image"][0], db= self.dispConArr["Final Image"][1])
 
         #Filter and accept those above confidence value
         parsedinfoText = infoText.query('conf > 70.0')
-        
-        cwd = os.getcwd() #get current working dir
-        outputCSV = cwd+"\labelout.csv"
-        infoText.to_csv(outputCSV, encoding='utf-8', index=False)
-        
-        outputCSV2 = cwd+"\labelout2.csv"
-        parsedinfoText.to_csv(outputCSV2, encoding='utf-8', index=False)
-               
-        
         #print(parsedinfoText)
         ProdID = None
         ProdName = None
@@ -306,7 +298,7 @@ class LabelOCR:
         #Extract ProdId with regex
         try: #extracting by checking main df for 14 digit char (because sometimes OCR will give 0% conf despite finding the ProdID)
             packedRow = parsedinfoText.query('text == "Packed"').index.item()
-            PIDrow = infoText['text'].str.match(r'(^[0-9]{14,15})')
+            PIDrow = infoText['text'].str.match(r'(^[0-9]{14})')
             ProdID = infoText['text'][PIDrow].values[0]
             #print(ProdID, "(0 conf)")
         except:
@@ -315,7 +307,7 @@ class LabelOCR:
                 #print(packedRow)
                 temp = infoText._get_value(packedRow-1,'text').replace(" ", "")
                 #print("temp type:", temp)
-                if len(temp)<10:
+                if len(temp)<14:
                     ProdID = infoText._get_value(packedRow-2,'text') + infoText._get_value(packedRow-1,'text')
                 else:
                     ProdID = temp
@@ -331,6 +323,11 @@ class LabelOCR:
         tempName = infoText[(infoText['line_num'] == ProdNameLine) & (infoText['word_num'] == ProdWordLine) & (infoText.index>packedRow)]['text'].values[0]
         print(tempName)
         '''
+        #print('Prod Id type: ',type(ProdID))
+        if re.match(r'^[0-9]{14}$',ProdID) == None: #ProdID does not meet the requirement of 14 numerical digits
+            IDlen = len(ProdID)
+            print(ProdID, f'of length {IDlen} does not match')
+            ProdID = None
 
         try:#Find 'Packed' row and offset 2 lines down
             ProdNameRow = parsedinfoText.query('text == @self.setNames[1][0]').index.item()
