@@ -4,6 +4,8 @@ from hx711 import HX711  # import the class HX711
 
 #Meanvalue/weight placed
 #156620/344 = 455.29
+#454.89
+#455.38
 
 try:
     GPIO.setmode(GPIO.BCM)  # set GPIO pin mode to BCM numbering

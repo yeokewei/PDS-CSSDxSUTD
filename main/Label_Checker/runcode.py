@@ -14,6 +14,7 @@ python runcode.py --image images\abc4.jpg
 
 Rpi
 python runcode.py --image images/2k10_2.jpg
+python runcode.py --image /home/pi/PDS-CSSDxSUTD/main/assets/lll3.png
 '''
 
 
@@ -24,7 +25,7 @@ args = vars(ap.parse_args())
 #print(args["image"])
 #print(type(args["image"]))
 
-locr = LabelOCR(path = args["image"], windows = False, dispToggle=0)
+locr = LabelOCR(path = args["image"], windows = False, dispToggle=1)
 
 output = locr.scan(100)
 

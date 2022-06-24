@@ -16,6 +16,7 @@ python runcode.py --image images\2kPaper2.png
 
 Rpi
 python runcode.py --image images/2kPaper2.png
+python runcode.py --image /home/pi/PDS-CSSDxSUTD/main/assets/bom.png
 '''
 start_time = time.time()
 

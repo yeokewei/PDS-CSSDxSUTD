@@ -371,15 +371,12 @@ if st.session_state['page']=='listscan_page':
 if st.session_state['page']=='confirm_finishpage':
     scanornot(False,True) #(takephoto,rescan or not?)
     
-    #st.markdown("<h1 style='text-align:centerialised;color:#black;font-size: 15px;background-color:(#F0F8FF 40%) ;height:3.5em;'>Step 3: Confirmation to end scanning of List</h1>", unsafe_allow_html=True)
     #https://discuss.streamlit.io/t/how-do-i-align-st-title/1668/11
     
     placeholder=st.empty()
     with placeholder.container():
         st.image(image_confirm1)
-        # st.markdown("<h1 style='text-align: center; color: red;'>Complete scanning all list?</h1>", unsafe_allow_html=True)
-        # st.markdown("<h1 style='text-align: center; color: black;font-size: 20px;background-color:transparent;border:4px solid #F0F8FF;'>INSTRUCTIONS: to continue scanning list please select No to continue scanning of list, to proceed to individual scanning select Yes. </h1>", unsafe_allow_html=True)
-        # st.markdown("<h1 style='text-align: center; color: red;font-size: 30px;'>**Note: Place A4 list under the camera before clicking the 'NO' button</h1>", unsafe_allow_html=True)
+       
     col1,col2 =st.columns(2)
     col1.button('Back', on_click=listscan_page)
     col2.button('Continue', on_click=ind_scanf)
@@ -424,6 +421,7 @@ if st.session_state['page']=='ind_scan':
             dataDict = LABELDf.scan(weight)
             ID = dataDict["ProdID"]
             name = dataDict["ProdName"]
+            flag = "PDS"
             
             
         elif (1037-threshold) <= weight <= (1037+threshold): #scan for PDS
@@ -510,14 +508,7 @@ if st.session_state['page']=='ind_scan':
                     st.table(printdf)  
         
     else:
-        
-        # #string_weight = "Weight    : "+ str(weight)
-        # #weightholder.markdown(f'## {string_weight}')
-        # #string_name = "Name: "+ str(name)
-        # #nameholder.markdown(f'## {string_name}')
-        # string_ID = "ID    : "+ str(ID)
-        # idholder.markdown(f'## {string_ID}')
-        # scanornot(True,False)
+
         
         c1,c2 = st.columns(2)
 
@@ -569,28 +560,11 @@ if st.session_state['page']=='ind_scan':
                     st.table(printdf)
 
         
-
-    
 #####(second finish page)----------------------------------------------------------------------------------------------------
 if st.session_state['page']=='secconfirm_finishpage':
     scanornot(False,True) #(takephoto,rescan or not?)
-
     st.image(image_confirm2)
-    # placeholder=st.empty()
-    # with placeholder.container():
-    #     st.markdown("<h1 style='text-align: center; color: red;'>Confirmation of ending individual scanning process.</h1>", unsafe_allow_html=True)
-    #     st.markdown("<h1 style='text-align: center; color: black;font-size: 20px;background-color:transparent;border:4px solid #F0F8FF;'>INSTRUCTIONS: To continue to scan the individual list click CONTINUE SCAN, to complete the scanning process select FINSH SCAN. </h1>", unsafe_allow_html=True)
-    #     st.markdown("<h1 style='text-align: center; color: red;font-size: 30px;'>**Note: You will not be able to scan after clicking the FINISH button</h1>", unsafe_allow_html=True)
     col1,col2 =st.columns(2)
-#     m1 = st.markdown("""
-# <style>div.stButton > button:first-child { 
-# color: black;
-# border-radius: 5%;
-# border: 2px solid;
-# backgroud-color: #F0F8FF;
-# height: 3em;
-# width: 12em; 
-# }</style>""", unsafe_allow_html=True)
 
     col1.button('Back', on_click=ind_scan)
     col2.button('Finish Scan', on_click=overview_page)
@@ -630,63 +604,3 @@ if st.session_state['page']=='overview_page':
             
     st.button('Return Home', on_click=begin_page)
 
-    
-
-    # st.write("I'm on scanning")
-    # col1,col2 =st.columns(2)
-    # with col1:
-    #     if st.button("Continue",on_click=listscan_page):
-    #         pass
-    # with col2: 
-    #     if st.button("Finish Scan",on_click=confirm_finishpage):
-    #         pass
-
-
-            # st.session_state["page"] == "file"
-            # st.write("test test")
-            # # st.experimental_rerun()
-# if st.session_state["page"] == 2:
-#     st.write("I'm on page 2")
-#     st.write()
-#     if st.button("Continue", on_click = Bomscan):
-#         pass
-
-
-
-
-
-
-
-
-
-
-
-# def begin_page():
-#     st.session_state['page'] = 0
-# def home_page():
-#     st.session_state['page'] = 'home_page'
-# def page1():
-#     st.session_state['page'] = 'page1'
-
-# if 'page' not in st.session_state:
-#     st.session_state['page']== 0
-
-# def home():
-#     #bom.bomlist ..
-#     #
-#     if st.button('Start'):#run the function that will focus on the 
-#         with st.spinner('Wait for it...'): #show the loading page 
-#             time.sleep(5)
-#             st.success('Done!',on_change= page1) #move this to next page \
-
-# st.write("Current Page:", st.session_state["page"])
-
-
-# if st.session_state['page']=='begin_page':
-#     st.write('I am in begin page')
-#     if st.button('Begin',on_click=home_page):
-#         pass
-# if st.session_state['page']=='begin_page':
-#     st.write('I am in Home page')
-#     if st.button('Start',on_click=home):
-#         pas

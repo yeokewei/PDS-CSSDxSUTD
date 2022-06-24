@@ -324,10 +324,13 @@ class LabelOCR:
         print(tempName)
         '''
         #print('Prod Id type: ',type(ProdID))
-        if re.match(r'^[0-9]{14}$',ProdID) == None: #ProdID does not meet the requirement of 14 numerical digits
-            IDlen = len(ProdID)
-            print(ProdID, f'of length {IDlen} does not match')
-            ProdID = None
+        try:
+            if re.match(r'^[0-9]{14}$',ProdID) == None: #ProdID does not meet the requirement of 14 numerical digits
+                IDlen = len(ProdID)
+                print(ProdID, f'of length {IDlen} does not match')
+                ProdID = None
+        except:
+            pass
 
         try:#Find 'Packed' row and offset 2 lines down
             ProdNameRow = parsedinfoText.query('text == @self.setNames[1][0]').index.item()
@@ -360,7 +363,6 @@ class LabelOCR:
         print(self.df)
         print(dataDict)
         return dataDict
-
 
 
 

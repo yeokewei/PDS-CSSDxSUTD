@@ -7,7 +7,7 @@ from .hx711 import HX711  # import the class HX711
 
 #Load cell setup start
 class hx711_custom:
-    def __init__(self, dpin = 26, sckpin = 19, ratio = 466.61):
+    def __init__(self, dpin = 26, sckpin = 19, ratio = 455.38):
         GPIO.setmode(GPIO.BCM)  # set GPIO pin mode to BCM numbering
             # Create an object hx which represents your real hx711 chip
             # Required input parameters are only 'dout_pin' and 'pd_sck_pin'\

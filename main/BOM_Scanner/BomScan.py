@@ -205,14 +205,14 @@ class BomScan:
 			
 			#For exporting to csv in windows (debugging purposes)
 			#export df to csv
-			'''
+			
 			cwd = os.getcwd() #get current working dir
 			outputCSV = cwd+"\out.csv"
 			BOMText.to_csv(outputCSV, encoding='utf-8', index=True)
 			
 			outputCSV2 = cwd+"\out2.csv"
 			parsedBOMText.to_csv(outputCSV2, encoding='utf-8', index=True)
-			'''
+			
 			self.boundingBox(df=parsedBOMText,cvImg=rotated, pause= self.dispConArr["bounded"][0], db= self.dispConArr["bounded"][1])
 
 			podiatryRows = parsedBOMText.query('text == "Podiatry"').index
