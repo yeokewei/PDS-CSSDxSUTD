@@ -1,4 +1,6 @@
 # OpTick Readme
+OpTick is a standalone weight-sensing and label reading prototype system designed in collaboration with Changi General Hospital as a Singapore University of Technologuy & Design (SUTD) Product Design Studio project in 2021. It aims to help to reduce the workload of nurses by assisting in the accounting of sterile logistics everyday.
+
 
 ## Requirements
 ### Hardware
